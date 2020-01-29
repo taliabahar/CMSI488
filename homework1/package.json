@@ -1,0 +1,16 @@
+{
+  "name": "homework1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "new_ael_interpreter.js",
+  "dependencies": {
+    "ohm": "^0.10.4",
+    "ohm-js": "^0.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
