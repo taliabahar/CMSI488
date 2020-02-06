@@ -11,6 +11,6 @@ d.
 e.  Negation is given a lower precedence because in this language, multop cannot be followed by the negation of a number. For example, 8 * -5 is an illegal expression. Also, we want to avoid a double negation since comments also begin with “—“.
 
 
-f. ![ADA 3b AST](https://i.imgur.com/pcfjlxE.jpg)
+f. ![ADA 3f](https://i.imgur.com/pcfjlxE.jpg)
 
-g. ![ADA 3b AST](https://i.imgur.com/J09DcrD.jpg) 
+g. ![ADA 3g](https://i.imgur.com/J09DcrD.jpg) 
