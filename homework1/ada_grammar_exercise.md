@@ -1,4 +1,5 @@
 a. Relative to the other grammar rules, Exp has the lowest precedence since it is the highest rule in the tree. Compared to each other, “and” and “or” have the same precedence.
+
 b. This AST is not possible to complete because a top level rule above Exp is necessary that allows a statement with multiple binary operators to be evaluated. 
 
 ![ADA 3b AST](https://i.imgur.com/daEo9ln.jpg)
