@@ -202,7 +202,7 @@ function parse(sourceCode) {
 Object.assign(Program.prototype, {
   check() {
     const context = new Set()
-    this.body.check(context)
+    this.body.check(context) // issue here
     return this
   },
 })
@@ -225,7 +225,7 @@ Object.assign(PrintStatement.prototype, {
 Object.assign(WhileStatement.prototype, {
   check(context) {
     this.expression.check(context)
-    this.program.check(context)
+    this.block.check(context)
   },
 })
 Object.assign(BinaryExp.prototype, {
@@ -271,13 +271,12 @@ const generators = {}
 generators.javascript = () => {
   Object.assign(Program.prototype, {
     gen() {
-      return this.body.map((s) => s.gen())
-        .join('\n')
+      return this.body.gen()
     },
   })
   Object.assign(Block.prototype, {
     gen() {
-      return `${this.body.map((s) => s.gen())
+      return `${this.statements.map((s) => s.gen())
         .join('\n    ')}`
     },
   })
@@ -327,8 +326,13 @@ generators.c = () => {
   generators.javascript()
   Object.assign(Program.prototype, {
     gen() {
-      return `#include <stdio.h>\nint main() {\n    ${this.body.map((s) => s.gen())
-        .join('\n    ')}\n    return 0;\n}`
+      return `#include <stdio.h>\n#include <math.h>\nint main() {\n${this.body.gen()}\nreturn 0;\n}`
+    },
+  })
+  Object.assign(Block.prototype, {
+    gen() {
+      return `${this.statements.map((s) => s.gen())
+        .join('\n    ')}`
     },
   })
   Object.assign(Assignment.prototype, {
@@ -341,9 +345,9 @@ generators.c = () => {
       return `printf("%d\\n", ${this.expression.gen()});`
     },
   })
-  Object.assign(WhileStatement.prototype, {
+  Object.assign(Pow.prototype, {
     gen() {
-      return `while (${this.expression.gen()}) {\n    ${this.program.gen()}\n}`
+      return `pow(${this.left.gen()}, ${this.right.gen()}`
     },
   })
 }
@@ -416,10 +420,12 @@ if (process.argv.length !== 4 || !['-C', '-JavaScript', '-Stack'].includes(proce
   try {
     generators[process.argv[2].substring(1)
       .toLowerCase()]()
+    // eslint-disable-next-line no-console
     console.log(parse(process.argv[3])
       .check()
       .gen())
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e.message)
     process.exitCode = 2
   }
