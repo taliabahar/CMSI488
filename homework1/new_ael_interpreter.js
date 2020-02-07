@@ -1,4 +1,5 @@
-const ohm = require("ohm-js");
+const ohm = require('ohm-js');
+
 const aelGrammar = ohm.grammar(`Ael {
   Program = (Statement ";")+
   Statement = id "=" Exp       --assign
@@ -25,7 +26,8 @@ const memory = new Map();
 // This language is so simple, we don't need an AST.
 const interpreter = aelGrammar
   .createSemantics()
-  .addOperation("exec", {
+  .addOperation('exec', {
+    // eslint-disable-next-line no-unused-vars
     Program(ss, _semicolons) {
       ss.exec();
     },
@@ -33,15 +35,17 @@ const interpreter = aelGrammar
       memory.set(i.sourceString, e.eval());
     },
     Statement_print(_, e) {
+      // eslint-disable-next-line no-console
       console.log(e.eval());
     },
+    // eslint-disable-next-line no-unused-vars
     Statement_while(_w, _openParen, e, _closeParen, _openCurly, p, _closeCurly) {
-      while (e.eval() != 0) {
-        p.exec()
+      while (e.eval() !== 0) {
+        p.exec();
       }
     },
   })
-  .addOperation("eval", {
+  .addOperation('eval', {
     Exp_plus(e, _op, t) {
       return e.eval() + t.eval();
     },
@@ -60,20 +64,25 @@ const interpreter = aelGrammar
     Factor_negate(_op, p) {
       return -p.eval();
     },
+    // eslint-disable-next-line no-unused-vars
     Primary_parens(_open, e, _close) {
       return e.eval();
     },
+    // eslint-disable-next-line no-unused-vars
     number(_chars) {
       return +this.sourceString;
     },
+    // eslint-disable-next-line no-unused-vars
     id(_firstChar, _restChars) {
       return memory.get(this.sourceString);
-    }
+    },
   });
 const match = aelGrammar.match(process.argv[2]);
 if (match.succeeded()) {
-  interpreter(match).exec();
+  interpreter(match)
+    .exec();
 } else {
+  // eslint-disable-next-line no-console
   console.error(match.message);
   process.exitCode = 1;
 }
