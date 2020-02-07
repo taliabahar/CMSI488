@@ -6,6 +6,7 @@
 //   $ node ael-compiler.js --target=JavaScript 'print 42;'
 //   $ node ael-compiler.js --target=Stack 'print 42;'
 
+// eslint-disable-next-line max-classes-per-file
 const ohm = require('ohm-js');
 
 // -----------------------------------------------------------------------------
@@ -15,10 +16,11 @@ const ohm = require('ohm-js');
 // -----------------------------------------------------------------------------
 
 const aelGrammar = ohm.grammar(`Ael {
-    Program = (Statement ";")+
+    Program   = Block
+    Block     = (Statement ";")+
     Statement = id "=" Exp       --assign
               | print Exp        --print
-              | "while" "(" Exp ")" "{" Program "}"  --while
+              | "while" "(" Exp ")" "{" Block "}"  --while
     Exp       = Exp ("+" | "-") Term   --binary
               | Term
     Term      = Term ("*" | "/") Pow  --binary
@@ -48,9 +50,18 @@ class Program {
   }
 }
 
+class Block {
+  constructor(statements) {
+    this.statements = statements;
+  }
+}
+
 class Assignment {
   constructor(id, expression) {
-    Object.assign(this, { id, expression });
+    Object.assign(this, {
+      id,
+      expression,
+    });
   }
 }
 
@@ -61,26 +72,39 @@ class PrintStatement {
 }
 
 class WhileStatement {
-    constructor(expression, program) {
-        Object.assign(this, { expression, program });
-    }
+  constructor(expression, block) {
+    Object.assign(this, {
+      expression,
+      block,
+    });
+  }
 }
 
 class BinaryExp {
   constructor(left, op, right) {
-    Object.assign(this, { left, op, right });
+    Object.assign(this, {
+      left,
+      op,
+      right,
+    });
   }
 }
 
 class Pow {
-    constructor(left, right) {
-        Object.assign(this, { left, right });
-    }
+  constructor(left, right) {
+    Object.assign(this, {
+      left,
+      right,
+    });
+  }
 }
 
 class UnaryExp {
   constructor(op, operand) {
-    Object.assign(this, { op, operand });
+    Object.assign(this, {
+      op,
+      operand,
+    });
   }
 }
 
@@ -105,26 +129,58 @@ class Identifier {
 // function which hides the use of Ohm from the rest of the compiler.
 // -----------------------------------------------------------------------------
 
-const astBuilder = aelGrammar.createSemantics().addOperation('ast', {
-  Program(body, _semicolons) { return new Program(body.ast()); },
-  Statement_assign(id, _, expression) { return new Assignment(id.sourceString, expression.ast()); },
-  Statement_print(_, expression) { return new PrintStatement(expression.ast()); },
-  Statement_while(_w, _openParen, expression, _closeParen, _openCurly, program, _closeCurly) { return new WhileStatement(expression.ast(), program.ast())},
-  Exp_binary(left, op, right) { return new BinaryExp(left.ast(), op.sourceString, right.ast()); },
-  Term_binary(left, op, right) { return new BinaryExp(left.ast(), op.sourceString, right.ast()); },
-  Pow_power(left, _, right) { return new Pow(left.ast(), right.ast())},
-  Factor_negate(_op, operand) { return new UnaryExp('-', operand.ast()); },
-  Primary_parens(_open, expression, _close) { return expression.ast(); },
-  number(_chars) { return new NumericLiteral(+this.sourceString); },
-  id(_firstChar, _restChars) { return new Identifier(this.sourceString); },
-});
+const astBuilder = aelGrammar.createSemantics()
+  .addOperation('ast', {
+    Program(body) {
+      return new Program(body.ast());
+    },
+    // eslint-disable-next-line no-unused-vars
+    Block(statements, _) {
+      return new Block(statements.ast());
+    },
+    Statement_assign(id, _, expression) {
+      return new Assignment(id.sourceString, expression.ast());
+    },
+    Statement_print(_, expression) {
+      return new PrintStatement(expression.ast());
+    },
+    // eslint-disable-next-line no-unused-vars
+    Statement_while(_w, _openParen, expression, _closeParen, _openCurly, block, _closeCurly) {
+      return new WhileStatement(expression.ast(), block.ast());
+    },
+    Exp_binary(left, op, right) {
+      return new BinaryExp(left.ast(), op.sourceString, right.ast());
+    },
+    Term_binary(left, op, right) {
+      return new BinaryExp(left.ast(), op.sourceString, right.ast());
+    },
+    Pow_power(left, _, right) {
+      return new Pow(left.ast(), right.ast());
+    },
+    Factor_negate(_op, operand) {
+      return new UnaryExp('-', operand.ast());
+    },
+    // eslint-disable-next-line no-unused-vars
+    Primary_parens(_open, expression, _close) {
+      return expression.ast();
+    },
+    // eslint-disable-next-line no-unused-vars
+    number(_chars) {
+      return new NumericLiteral(+this.sourceString);
+    },
+    // eslint-disable-next-line no-unused-vars
+    id(_firstChar, _restChars) {
+      return new Identifier(this.sourceString);
+    },
+  });
 
 function parse(sourceCode) {
   const match = aelGrammar.match(sourceCode);
   if (!match.succeeded()) {
     throw new Error(match.message);
   }
-  return astBuilder(match).ast();
+  return astBuilder(match)
+    .ast();
 }
 
 // -----------------------------------------------------------------------------
@@ -144,28 +200,54 @@ function parse(sourceCode) {
 // -----------------------------------------------------------------------------
 
 Object.assign(Program.prototype, {
-  check() { const context = new Set(); this.body.forEach(s => s.check(context)); return this; },
+  check() {
+    const context = new Set();
+    this.body.check(context);
+    return this;
+  },
+});
+Object.assign(Block.prototype, {
+  check(context) {
+    this.statements.forEach((s) => s.check(context));
+  },
 });
 Object.assign(Assignment.prototype, {
-  check(context) { this.expression.check(context); context.add(this.id); },
+  check(context) {
+    this.expression.check(context);
+    context.add(this.id);
+  },
 });
 Object.assign(PrintStatement.prototype, {
-  check(context) { this.expression.check(context); },
+  check(context) {
+    this.expression.check(context);
+  },
 });
 Object.assign(WhileStatement.prototype, {
-  check(context) { this.expression.check(context); this.program.check(context); }
-})
+  check(context) {
+    this.expression.check(context);
+    this.program.check(context);
+  },
+});
 Object.assign(BinaryExp.prototype, {
-  check(context) { this.left.check(context); this.right.check(context); },
+  check(context) {
+    this.left.check(context);
+    this.right.check(context);
+  },
 });
 Object.assign(UnaryExp.prototype, {
-  check(context) { this.operand.check(context); },
+  check(context) {
+    this.operand.check(context);
+  },
 });
 Object.assign(Pow.prototype, {
-    check(context) { this.left.check(context); this.right.check(context); },
-})
+  check(context) {
+    this.left.check(context);
+    this.right.check(context);
+  },
+});
 Object.assign(NumericLiteral.prototype, {
-  check() { /* Always fine */ },
+  check() { /* Always fine */
+  },
 });
 Object.assign(Identifier.prototype, {
   check(context) {
@@ -188,78 +270,138 @@ const generators = {};
 
 generators.javascript = () => {
   Object.assign(Program.prototype, {
-    gen() { return this.body.map(s => s.gen()).join('\n'); },
+    gen() {
+      return this.body.map((s) => s.gen())
+        .join('\n');
+    },
+  });
+  Object.assign(Block.prototype, {
+    gen() {
+      return `${this.body.map((s) => s.gen())
+        .join('\n    ')}`;
+    },
   });
   Object.assign(Assignment.prototype, {
-    gen() { return `let ${this.id} = ${this.expression.gen()};`; },
+    gen() {
+      return `let ${this.id} = ${this.expression.gen()};`;
+    },
   });
   Object.assign(PrintStatement.prototype, {
-    gen() { return `console.log(${this.expression.gen()});`; },
+    gen() {
+      return `console.log(${this.expression.gen()});`;
+    },
   });
   Object.assign(WhileStatement.prototype, {
-      gen() { return `while (${this.expression.gen()}) {\n    ${this.program.gen()}\n}`}
-  })
+    gen() {
+      return `while (${this.expression.gen()}) {\n    ${this.block.gen()}\n}`;
+    },
+  });
   Object.assign(BinaryExp.prototype, {
-    gen() { return `(${this.left.gen()} ${this.op} ${this.right.gen()})`; },
+    gen() {
+      return `(${this.left.gen()} ${this.op} ${this.right.gen()})`;
+    },
   });
   Object.assign(UnaryExp.prototype, {
-    gen() { return `(${this.op} ${this.operand.gen()})`; },
+    gen() {
+      return `(${this.op} ${this.operand.gen()})`;
+    },
   });
   Object.assign(Pow.prototype, {
-      gen() { return `${this.left.gen()} ** ${this.right.gen()}`}
-  })
+    gen() {
+      return `${this.left.gen()} ** ${this.right.gen()}`;
+    },
+  });
   Object.assign(NumericLiteral.prototype, {
-    gen() { return this.value; },
+    gen() {
+      return this.value;
+    },
   });
   Object.assign(Identifier.prototype, {
-    gen() { return this.value; },
+    gen() {
+      return this.value;
+    },
   });
 };
 
 generators.c = () => {
-    generators.javascript();
-    Object.assign(Program.prototype, {
-      gen() {
-        return `#include <stdio.h>\nint main() {\n    ${this.body.map(s => s.gen()).join('\n    ')}\n    return 0;\n}`;
-      },
-    });
-    Object.assign(Assignment.prototype, {
-      gen() { return `int ${this.id} = ${this.expression.gen()};`; },
-    });
-    Object.assign(PrintStatement.prototype, {
-      gen() { return `printf("%d\\n", ${this.expression.gen()});`; },
-    });
-    Object.assign(WhileStatement.prototype, {
-        gen() { return `while (${this.expression.gen()}) {\n    ${this.program.gen()}\n}`}
-    })
-  };
-
-generators.stack = () => {
-  const ops = { '+': 'ADD', '-': 'SUB', '*': 'MUL', '/': 'DIV' };
-
-  const instructions = [];
-  function emit(instruction) { instructions.push(instruction); }
-
+  generators.javascript();
   Object.assign(Program.prototype, {
-    gen() { this.body.forEach(s => s.gen()); return instructions.join('\n'); },
+    gen() {
+      return `#include <stdio.h>\nint main() {\n    ${this.body.map((s) => s.gen())
+        .join('\n    ')}\n    return 0;\n}`;
+    },
   });
   Object.assign(Assignment.prototype, {
-    gen() { this.expression.gen(); emit(`STORE ${this.id}`); },
+    gen() {
+      return `int ${this.id} = ${this.expression.gen()};`;
+    },
   });
   Object.assign(PrintStatement.prototype, {
-    gen() { this.expression.gen(); emit('OUTPUT'); },
+    gen() {
+      return `printf("%d\\n", ${this.expression.gen()});`;
+    },
+  });
+  Object.assign(WhileStatement.prototype, {
+    gen() {
+      return `while (${this.expression.gen()}) {\n    ${this.program.gen()}\n}`;
+    },
+  });
+};
+
+generators.stack = () => {
+  const ops = {
+    '+': 'ADD',
+    '-': 'SUB',
+    '*': 'MUL',
+    '/': 'DIV',
+  };
+
+  const instructions = [];
+
+  function emit(instruction) {
+    instructions.push(instruction);
+  }
+
+  Object.assign(Program.prototype, {
+    gen() {
+      this.body.forEach((s) => s.gen());
+      return instructions.join('\n');
+    },
+  });
+  Object.assign(Assignment.prototype, {
+    gen() {
+      this.expression.gen();
+      emit(`STORE ${this.id}`);
+    },
+  });
+  Object.assign(PrintStatement.prototype, {
+    gen() {
+      this.expression.gen();
+      emit('OUTPUT');
+    },
   });
   Object.assign(BinaryExp.prototype, {
-    gen() { this.left.gen(); this.right.gen(); emit(ops[this.op]); },
+    gen() {
+      this.left.gen();
+      this.right.gen();
+      emit(ops[this.op]);
+    },
   });
   Object.assign(UnaryExp.prototype, {
-    gen() { this.operand.gen(); emit('NEG'); },
+    gen() {
+      this.operand.gen();
+      emit('NEG');
+    },
   });
   Object.assign(NumericLiteral.prototype, {
-    gen() { emit(`PUSH ${this.value}`); },
+    gen() {
+      emit(`PUSH ${this.value}`);
+    },
   });
   Object.assign(Identifier.prototype, {
-    gen() { emit(`LOAD ${this.value}`); },
+    gen() {
+      emit(`LOAD ${this.value}`);
+    },
   });
 };
 
@@ -272,8 +414,11 @@ if (process.argv.length !== 4 || !['-C', '-JavaScript', '-Stack'].includes(proce
   process.exitCode = 1;
 } else {
   try {
-    generators[process.argv[2].substring(1).toLowerCase()]();
-    console.log(parse(process.argv[3]).check().gen());
+    generators[process.argv[2].substring(1)
+      .toLowerCase()]();
+    console.log(parse(process.argv[3])
+      .check()
+      .gen());
   } catch (e) {
     console.error(e.message);
     process.exitCode = 2;
