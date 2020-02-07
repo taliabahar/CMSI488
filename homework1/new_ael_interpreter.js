@@ -1,4 +1,4 @@
-const ohm = require('ohm-js');
+const ohm = require('ohm-js')
 
 const aelGrammar = ohm.grammar(`Ael {
   Program = (Statement ";")+
@@ -21,68 +21,68 @@ const aelGrammar = ohm.grammar(`Ael {
   number    = digit+
   print     = "print" ~alnum
   id        = ~print letter alnum*
-}`);
-const memory = new Map();
+}`)
+const memory = new Map()
 // This language is so simple, we don't need an AST.
 const interpreter = aelGrammar
   .createSemantics()
   .addOperation('exec', {
     // eslint-disable-next-line no-unused-vars
     Program(ss, _semicolons) {
-      ss.exec();
+      ss.exec()
     },
     Statement_assign(i, _eq, e) {
-      memory.set(i.sourceString, e.eval());
+      memory.set(i.sourceString, e.eval())
     },
     Statement_print(_, e) {
       // eslint-disable-next-line no-console
-      console.log(e.eval());
+      console.log(e.eval())
     },
     // eslint-disable-next-line no-unused-vars
     Statement_while(_w, _openParen, e, _closeParen, _openCurly, p, _closeCurly) {
       while (e.eval() !== 0) {
-        p.exec();
+        p.exec()
       }
     },
   })
   .addOperation('eval', {
     Exp_plus(e, _op, t) {
-      return e.eval() + t.eval();
+      return e.eval() + t.eval()
     },
     Exp_minus(e, _op, t) {
-      return e.eval() - t.eval();
+      return e.eval() - t.eval()
     },
     Pow_power(f, _op, p) {
-      return f.eval() ** p.eval();
+      return f.eval() ** p.eval()
     },
     Term_times(t, _op, f) {
-      return t.eval() * f.eval();
+      return t.eval() * f.eval()
     },
     Term_divide(t, _op, f) {
-      return t.eval() / f.eval();
+      return t.eval() / f.eval()
     },
     Factor_negate(_op, p) {
-      return -p.eval();
+      return -p.eval()
     },
     // eslint-disable-next-line no-unused-vars
     Primary_parens(_open, e, _close) {
-      return e.eval();
+      return e.eval()
     },
     // eslint-disable-next-line no-unused-vars
     number(_chars) {
-      return +this.sourceString;
+      return +this.sourceString
     },
     // eslint-disable-next-line no-unused-vars
     id(_firstChar, _restChars) {
-      return memory.get(this.sourceString);
+      return memory.get(this.sourceString)
     },
-  });
-const match = aelGrammar.match(process.argv[2]);
+  })
+const match = aelGrammar.match(process.argv[2])
 if (match.succeeded()) {
   interpreter(match)
-    .exec();
+    .exec()
 } else {
   // eslint-disable-next-line no-console
-  console.error(match.message);
-  process.exitCode = 1;
+  console.error(match.message)
+  process.exitCode = 1
 }

@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    browser: true,
+    browser: false,
     es6: true,
   },
   extends: [
@@ -15,5 +15,6 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    semi: [2, "never"]
   },
 };
