@@ -392,12 +392,19 @@ generators.stack = () => {
   Object.assign(WhileStatement.prototype, {
     gen() {
       emit('LABEL L1')
-      console.log('chec')
       this.expression.gen()
       emit('JUMP L2')
       this.block.gen()
       emit('JUMP L1')
       emit('LABEL L2')
+    },
+  })
+  Object.assign(Pow.prototype, {
+    gen() {
+      this.left.gen()
+      // vvvv need to iterate  this somehow
+      this.left.gen()
+      emit('MUL')
     },
   })
   Object.assign(BinaryExp.prototype, {
