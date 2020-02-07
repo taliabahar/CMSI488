@@ -368,8 +368,13 @@ generators.stack = () => {
 
   Object.assign(Program.prototype, {
     gen() {
-      this.body.forEach((s) => s.gen())
+      this.body.gen()
       return instructions.join('\n')
+    },
+  })
+  Object.assign(Block.prototype, {
+    gen() {
+      this.statements.forEach((s) => s.gen())
     },
   })
   Object.assign(Assignment.prototype, {
@@ -382,6 +387,17 @@ generators.stack = () => {
     gen() {
       this.expression.gen()
       emit('OUTPUT')
+    },
+  })
+  Object.assign(WhileStatement.prototype, {
+    gen() {
+      emit('LABEL L1')
+      console.log('chec')
+      this.expression.gen()
+      emit('JUMP L2')
+      this.block.gen()
+      emit('JUMP L1')
+      emit('LABEL L2')
     },
   })
   Object.assign(BinaryExp.prototype, {
