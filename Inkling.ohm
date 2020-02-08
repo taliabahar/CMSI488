@@ -3,35 +3,34 @@ inkling {
     Stmt   =  SimpleStmt newline+ | IfExpr | ForExpr | FuncDec | WhileExpr
     Block       =  "{" Stmt "}"
     SimpleStmt  =  Call
-            // person["name"] is "bob"
             | VarExp "is" Exp                            -- assign
             |  id "is" "Always"? Type Exp       -- vardecl
             |  "exit"                                    -- break
             |  "gimme" Exp?                              -- return
-            | Exp // possible problem
-    // Arrays, Dict, Sets index/key  person["name"], person.name
+            | Exp
+
     VarExp = VarExp "[" Exp "]"                          -- subscripted
             |  VarExp "." id                             -- field
             | id
-    // Functions
+
     FuncDec = "function" id "(" Params ")" ReturnType Block        -- function
             |  id is "Always" "(" Params ")" ReturnType => Block    -- arrowfunction
     Param       =  id "is" Type
     Params      =  ListOf<Param, ",">
     Args        =  ListOf<Exp, ",">
     ReturnType = "is" (Type | void)
-    // a datastructure could have a function in it // person["run"]()
+
     Call        =  VarExp "(" Args ")"
-    // loops & conditionals
+
     WhileExpr = "while" "(" Exp ")" Block
     IfExpr =    Exp "?" Exp ":" Exp                    -- ternary
             |  "if" "(" Exp ")" Block
                 ("else if" "(" Exp ")" Block)*
                 ("else" Block)?                        -- if
     ForExpr = "for" id "is" Type "in" Exp Block
-    // Classes
+
     ClassDecl   =  "Class" id ("extends" id)? "{" (Field | newline)+ "}"   -- class
-    // represent key value pair
+
     Field       =  id ":" Exp
     Exp  = "display" Exp0
     Exp0 = Exp1 "and" Exp     --plus
@@ -43,11 +42,13 @@ inkling {
         | Exp3
     Exp3 = Exp3 mulop Exp4    --mulop
         | Exp4
-    Exp4 = prefixop Exp5      --prefix
+    Exp4 = Exp5 "^" Exp4      --pow
+    Exp5 = prefixop Exp6      --prefix
+        |  Exp6 postfixOp     --postfix
         | Exp6
-    Exp5 = id Args
+    Exp6 = id Args
         | Exp7
-    Exp6 = "(" Exp ")"        --paren
+    Exp7 = "(" Exp ")"        --paren
         | numlit
         | boollit
         | strlit
@@ -59,7 +60,7 @@ inkling {
         |  "{" ListOf<KeyValue, ","> "}"              -- dict
     keyword = ( "while" | "if" | "else" | "is" | "true" | "false" | "for" | "do"
     | "display"| "gimme" | "btw:" | "fyi:" | "exit" | "in" | "and" | "or" | "function")
-    // Types
+
     Type = (Num | Dict | Bool | List | Text)
     Num = "Num"
     ListType    =  "List<" Type ">"
