@@ -1,0 +1,105 @@
+inkling {
+
+Program = (Statement "\n" || FuncDec "\n")+
+FuncDec = "Function" id "(" Params ")" ReturnType Block    -- function
+        | "Always" id is "(" Params ")" ReturnType => Block    -- arrow function
+ReturnType = "is" (Type | void) 
+
+Statement = "while" "(" Exp ")" Block               -- while
+          |  "for" id "is" Type "in" Exp Block       -- loop
+          |  Exp "?" Exp ":" Exp                    -- ternary
+          |  "if" "(" Exp ")" Block
+            ("else if" "(" Exp ")" Block)*
+            ("else" Block)?                            -- if
+          | id "is" Type Exp                         -- let
+          |  "Always" id "is" Type Exp                 -- const
+          |  "exit"                                    -- break
+          |  "gimme" Exp?                              -- return
+          |  Exp
+
+Block = "{" Statement+ "}"
+
+Exp  = Exp1 "and" Exp     --and
+     | Exp1 "or" Exp      --or
+     | Exp1
+Exp1 = Exp2 relop Exp2    --relop
+     | Exp2
+Exp2 = Exp2 addop Exp3    --addop
+     | Exp3
+Exp3 = Exp3 mulop Exp4    --mulop
+     | Exp4
+Exp4 = Exp5 ^ Exp4        --power
+     | Exp5
+Exp5 = prefixop Exp6      --prefix
+     | Exp6
+Exp6 = "(" Exp ")"        --paren
+     | id Args            --call
+     | numlit
+     | boollit
+     | txtlit
+     | id
+     |  "[" ListOf<Exp, ","> "]"                   -- list
+     |  "(" ListOf<Exp, ","> ")"                  -- set
+     |  "{" ListOf<KeyValue, ","> "}"              -- dict
+KeyValue    =  Exp ":" Exp
+
+keyword = ( "while" | "if" | "else" | "is" | "true" | "false" | "for" | "do"
+| "display"| "gimme" | "fyi:" | "exit" | "in" | "and" | "or" )
+
+Type = (Num | Dict | Bool | List | Text)
+
+Num = "Num"
+List    =  "list[" Type "]"
+Dict    =  "Dict{" Type "," Type "}"
+Set     =  "set{" Type "}"
+Text    =  "Text"
+Bool    = "true" | "false"
+
+Param       =  id "is" Type
+Params      =  ListOf<Param, ",">
+Args        =  ListOf<Exp, ",">
+
+id          =  ~keyword ~Type letter alnum*
+
+numlit      =  digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
+boollit     =  "true" | "false"
+txtlit      =  "\"" (~"\\" ~"\"" ~"\n" any | escape)* "\""
+escape      =  "\\" ("\\" | "\"" | "n")                   --
+            |  "\\u{" hexDigit+ "}"                       --
+
+mulop       =  "*" | "/" | "%"
+addop       =  "+" | "-"
+relop       =  "<=" | "<" | "==" | "!=" | ">=" | ">"
+prefixOp    = "++" | "-" | "!"
+postfixOp   = "++"
+
+newline     =  "\n"+
+space      :=  " " | "\t" | comment
+comment     =  "btw:" ~"fyi:" (~"\n" any)*        -- singleline
+            |  "fyi:" (~":iyf" any)* ":iyf"          -- multiline
+}
+
+
+
+
+
+"Hello" * "Goodbye"
+//MAYBE
+Exp = BoolExp | NumExp | StrExp | ListExp | SetExp | DictExp
+BoolExp  = BoolExp1 "and" BoolExp     --plus
+         | BoolExp1 "or" BoolExp      --minus
+         | BoolExp1
+BoolExp1 = BoolExp2 relop BoolExp2    --relop
+         | BoolExp2
+BoolExp2 = prefixop BoolExp3      --prefix
+         | BoolExp6
+BoolExp3= id Args
+         | BoolExp4
+BoolExp4 = "(" BoolExp ")"        --paren
+         | boollit
+         | id
+         // these are array, set, dict
+         |  "[" ListOf<Exp, ","> "]"                   -- list
+         |   "(" ListOf<Exp, ","> ")"                  -- set
+         |  "{" ListOf<KeyValue, ","> "}"              -- dict
+//MAYBE

@@ -1,0 +1,35 @@
+//WORKING ANSWER
+const ohm = require("ohm-js");
+const mysteryGrammar = ohm.grammar(`Mystery {
+   Program = (Function)* Exp
+   Function = "func" id Params Body
+   Exp   = Addop ? Addop : Exp  --cond
+          | Addop
+   Addop  = Addop "+" Term     --plus
+          | Addop "-" Term     --minus
+          | Term
+   Term   = Term "*" Factor  --times
+          | Term "/" Factor  --divide
+          | Factor
+   Factor  = "-" Factorial      --negate
+          | Factorial
+   Factorial  = FuncCall "!"   --factorial
+          | FuncCall
+   FuncCall = id Args
+          | Primary
+   Primary = "(" Exp ")"      --parens
+          | number
+          | id
+   Params  = ListOf<id, ",">
+   Args    = ListOf<Exp, ",">
+   Body    = (Exp ";")+ "end"
+   Number  = float | int
+   int     = digit+
+   float   = digit+ "." digit+ expo?
+   expo     = "e" "-"? digit+
+   hex     = "0x" hexDigit+
+   String  = qq (~qq any)+ qq
+   qq      = "\""
+   id      = ~func ~end (letter | "$") char*
+   char    = alnum | "_" | "$"
+   Comments = "--}>" any* "\n"
