@@ -11,10 +11,6 @@
 const syntaxCheck = require("../syntax-checker");
 
 const program = String.raw`
-    btw: this is how we write comments
-    fyi: this is how we write
-        multi-line comments
-    :xoxo
     x is Num 5
     x is 10
     y is Always Num 10
@@ -68,7 +64,7 @@ const program = String.raw`
         x < 0 ? gimme true : gimme false
     }
 
-    trueVal is Bool = negativeChecker(5 is Num)
+    trueVal is Bool negativeChecker(5)
 
     function findFirstOdd(x is Num) is Num {
         for i is Num in range(0, x) {

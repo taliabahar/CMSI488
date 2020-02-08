@@ -29,7 +29,7 @@ Inkling {
     Call        =  VarExp "(" Args ")"
 
     WhileExpr = "while" "(" Exp ")" Block
-    IfExpr =    Exp "?" Exp ":" Exp                    -- ternary
+    IfExpr =    Exp "?" SimpleStmt ":" SimpleStmt                    -- ternary
             |  "if" "(" Exp ")" Block
                 ("else if" "(" Exp ")" Block)*
                 ("else" Block)?                        -- if
@@ -64,8 +64,8 @@ Inkling {
         |  "{" ListOf<KeyValue, ","> "}"              -- dict
 
     KeyValue = id ":" Exp
-    keyword = ( "while" | "if" | "else" | "is" | "true" | "false" | "for" | "do" | "Always"
-    | "display"| "gimme" | "btw:" | "fyi:" | "exit" | "in" | "and" | "or" | "function" | "Num" | "Dict" | "Bool" | "List" | "Text")
+    keyword = ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "Always "
+    | "display"| "gimme " | "btw: " | "fyi: " | "exit " | "in " | "and " | "or " | "function " | "Num " | "Dict " | "Bool " | "List " | "Text ")
 
     Type = (Num | Dict | Bool | List | Text)
     Num     = "Num"
