@@ -1,12 +1,16 @@
 Inkling {
     Program     =  (Stmt | ClassDecl)
-    Stmt   =  SimpleStmt newline+ | IfExpr | ForExpr | FuncDec | WhileExpr
+    Stmt   =  SimpleStmt newline+ -- simpleStmt
+           | IfExpr               -- ifBlock
+           | ForExpr              -- forLoop
+           | FuncDec              -- funcDec
+           | WhileExpr            -- whileLoop
     Block       =  "{" Stmt "}"
     SimpleStmt  =  Call
             |  VarExp "is" Exp                            -- assign
             |  id "is" "Always"? Type Exp       -- vardecl
             |  "exit"                                    -- break
-            |  "display" Exp
+            |  "display" Exp                             -- print
             |  "gimme" Exp?                              -- return
             |  Exp
 
@@ -46,9 +50,7 @@ Inkling {
     Exp5 = prefixOp Exp6      --prefix
         |  Exp6 postfixOp     --postfix
         | Exp6
-    Exp6 = id Args
-        | Exp7
-    Exp7 = "(" Exp ")"        --paren
+    Exp6 = "(" Exp ")"        --paren
         | numlit
         | boollit
         | txtlit

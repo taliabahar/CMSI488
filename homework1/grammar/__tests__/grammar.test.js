@@ -14,7 +14,7 @@ const program = String.raw`
     btw: this is how we write comments
     fyi: this is how we write
         multi-line comments
-    :xoxo          
+    :xoxo
     x is Num 5
     x is 10
     y is Always Num 10
@@ -31,7 +31,7 @@ const program = String.raw`
         }
         gimme x * findFactorial(x - 1)
     }
-    
+
     function fibonacci(x is Num) is Num {
         if(x <= 1) {
             gimme x
@@ -63,13 +63,13 @@ const program = String.raw`
         }
         gimme x > 1
     }
-    
+
     function negativeChecker(x is Num) is Bool {
         x < 0 ? gimme true : gimme false
     }
-    
+
     trueVal is Bool = negativeChecker(5 is Num)
-    
+
     function findFirstOdd(x is Num) is Num {
         for i is Num in range(0, x) {
             if(i % 2 != 0) {
@@ -128,7 +128,7 @@ const program = String.raw`
     arrowFunction is Always(x is Num) is Num => {
         gimme x + 1
     }
-    
+
     ourList is List<Text> ["this", "is", "a", "legal", "list", "in", "Inkling"]
     aListOfNums is List<Text> ["1", "2", "3", "4", "5", "6", "7"]
     aListOfNums[0] is 0
