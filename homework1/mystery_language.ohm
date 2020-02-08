@@ -1,4 +1,3 @@
-//WORKING ANSWER
 const ohm = require("ohm-js");
 const mysteryGrammar = ohm.grammar(`Mystery {
    Program = (Function)* Exp
@@ -28,8 +27,10 @@ const mysteryGrammar = ohm.grammar(`Mystery {
    float   = digit+ "." digit+ expo?
    expo     = "e" "-"? digit+
    hex     = "0x" hexDigit+
-   String  = qq (~qq any)+ qq
+   String  = qq (~qq escape | any)* qq
    qq      = "\""
+   escape  =  "\\\\" | "\\\"" | "\\'" | "\\n" | "\\t" | hexseq
+   hexseq  =  "\u{" h h? h? h? h? h? "}"
    id      = ~func ~end (letter | "$") char*
    char    = alnum | "_" | "$"
    Comments = "--}>" any* "\n"
