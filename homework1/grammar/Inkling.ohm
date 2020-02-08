@@ -1,14 +1,15 @@
 Inkling {
-    Program     =  (Stmt | ClassDecl)
+    Program     =  (Stmt | ClassDecl)*
     Stmt   =  SimpleStmt newline+ -- simpleStmt
            | IfExpr               -- ifBlock
            | ForExpr              -- forLoop
            | FuncDec              -- funcDec
            | WhileExpr            -- whileLoop
-    Block       =  "{" Stmt "}"
+    Block       =  "{" Stmt+ "}"
     SimpleStmt  =  Call
             |  VarExp "is" Exp                            -- assign
-            |  id "is" "Always"? Type Exp       -- vardecl
+            |  id "is" "Always" Type Exp                 -- constdec
+            |  id "is" Type Exp                          -- letdec
             |  "exit"                                    -- break
             |  "display" Exp                             -- print
             |  "gimme" Exp?                              -- return
@@ -47,6 +48,7 @@ Inkling {
     Exp3 = Exp3 mulop Exp4    --mulop
         | Exp4
     Exp4 = Exp5 "^" Exp4      --pow
+        | Exp5
     Exp5 = prefixOp Exp6      --prefix
         |  Exp6 postfixOp     --postfix
         | Exp6
@@ -62,11 +64,11 @@ Inkling {
         |  "{" ListOf<KeyValue, ","> "}"              -- dict
 
     KeyValue = id ":" Exp
-    keyword = ( "while" | "if" | "else" | "is" | "true" | "false" | "for" | "do"
+    keyword = ( "while" | "if" | "else" | "is" | "true" | "false" | "for" | "do" | "Always"
     | "display"| "gimme" | "btw:" | "fyi:" | "exit" | "in" | "and" | "or" | "function" | "Num" | "Dict" | "Bool" | "List" | "Text")
 
     Type = (Num | Dict | Bool | List | Text)
-    Num = "Num"
+    Num     = "Num"
     List    =  "List<" Type ">"
     Set     =  "Set<" Type ">"
     Dict    =  "Dict<" Type "," Type ">"
@@ -76,7 +78,7 @@ Inkling {
     numlit      =  digit+ ("." digit+)? (("E" | "e") ("+" | "-")? digit+)?
     boollit     =  "true" | "false"
     txtlit      =  "\"" (~"\\" ~"\"" ~"\n" ~ "\t" any | escape)* "\""
-    escape      =  "\\" ("\\" | "\"" | "\n" | "\t")                   --escape
+    escape      =  "\\" ("\"" | "\'" | "n" | "t")?                   --escape
                 |  "\\u{" hexDigit+ "}"                       --hexDigit
     mulop       =  "*" | "/" | "%"
     addop       =  "+" | "-"
