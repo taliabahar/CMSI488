@@ -4,6 +4,7 @@
   "description": "",
   "main": "new_ael_interpreter.js",
   "dependencies": {
+    "jest": "^25.1.0",
     "ohm": "^0.10.4",
     "ohm-js": "^0.14.0"
   },
@@ -13,7 +14,7 @@
     "eslint-plugin-import": "^2.20.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC"

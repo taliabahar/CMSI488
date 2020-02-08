@@ -1,6 +1,7 @@
 # Inkling: An Intuitive Programming Language
 
 <p align="center"><img src="images/logo-inkling.png" alt="inkling logo" width="350"/></p>
+
 ## Introduction
 
 You may not know this, but you already know inkling. Inkling is a programming language that lets you follow your gut- you learn to program by doing what makes sense to you while learning to shift your thinking to grow as a programmer and as a thinker. Speak the language you code. Type what you want to say. Where will your inkling take you today?
@@ -117,7 +118,7 @@ fyi: if you need to leave a multi-line
 #### Inkling Example
 
 ```
-function fibonacci(x is Num) Num {
+function fibonacci(x is Num) is Num {
     if(x <= 1) {
         gimme x
     }
@@ -141,7 +142,7 @@ function fibonacci(x) {
 #### Inkling Example
 
 ```
-function findFactorial(x is Num) Num {
+function findFactorial(x is Num) is Num {
     if(x == 0 or x == 1) {
         gimme x
     }
@@ -165,7 +166,7 @@ function findFactorial(x) {
 #### Inkling Example
 
 ```
-function fizzbuzz(x is Num) void {
+function fizzbuzz(x is Num) is void {
     for i is Num in range(0,x) {
         if (i%3 == 0 and i%5 == 0) {
             display "fizzbuzz"
@@ -203,8 +204,8 @@ function  fizzBuzz(x) {
 #### Inkling Example
 
 ```
-function isPrime(x is Num) Num {
-    start is Num 2;
+function isPrime(x is Num) is Num {
+    start is Num 2
     while(start <= x^0.5) {
         if (x % start++ < 1) {
             gimme false
@@ -233,7 +234,7 @@ function  isPrime(x) {
 #### Inkling Example
 
 ```
-function findGreatest(a is Num, b is Num, c is Num) Num {
+function findGreatest(a is Num, b is Num, c is Num) is Num {
     if (a >= b and a >= c) {
         gimme x
     } else if (b >= a and b >= c) {
