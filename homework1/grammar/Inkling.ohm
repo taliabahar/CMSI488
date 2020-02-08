@@ -1,10 +1,10 @@
 Inkling {
     Program     =  (Stmt | ClassDecl)*
-    Stmt   =  SimpleStmt newline+ -- simpleStmt
-           | IfExpr               -- ifBlock
-           | ForExpr              -- forLoop
-           | FuncDec              -- funcDec
-           | WhileExpr            -- whileLoop
+    Stmt   =  newline* SimpleStmt newline+ -- simpleStmt
+           | newline* IfExpr newline+               -- ifBlock
+           | newline* ForExpr newline+              -- forLoop
+           | newline* FuncDec newline+              -- funcDec
+           | newline* WhileExpr newline+            -- whileLoop
     Block       =  "{" Stmt+ "}"
     SimpleStmt  =  Call
             |  VarExp "is" Exp                            -- assign
@@ -53,11 +53,11 @@ Inkling {
         |  Exp6 postfixOp     --postfix
         | Exp6
     Exp6 = "(" Exp ")"        --paren
-        | numlit
+        | Call
         | boollit
         | txtlit
+        | numlit
         | id
-        | Call
         | VarExp
         |  "[" ListOf<Exp, ","> "]"                   -- list
         |   "{" ListOf<Exp, ","> "}"                  -- set
