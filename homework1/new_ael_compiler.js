@@ -393,7 +393,7 @@ generators.stack = () => {
     gen() {
       emit('LABEL L1')
       this.expression.gen()
-      emit('JUMP L2')
+      emit('JZ L2')
       this.block.gen()
       emit('JUMP L1')
       emit('LABEL L2')
