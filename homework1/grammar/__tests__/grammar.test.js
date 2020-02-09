@@ -11,6 +11,13 @@
 const syntaxCheck = require("../syntax-checker");
 
 const program = String.raw`
+    btw: this is how we write comments
+    fyi: this is how we write
+        multi-line comments
+    :xoxo
+    x is Num 5
+    x is 10
+    y is Always Num 10
     x is Num 5
     x is 10
     y is Always Num 10
@@ -109,18 +116,6 @@ const program = String.raw`
         }
     }
 
-    function testClasses() is Text {
-        Class circle {
-            radius : 5
-            area : 3.14159 * radius^2
-        }
-        if (circle.radius == 5 and circle.area == 78.53975) {
-            gimme "classes and dot operator work!"
-        } else {
-            gimme "classes and dot operator broke"
-        }
-    }
-
     arrowFunction is Always(x is Num) is Num => {
         gimme x + 1
     }
@@ -131,6 +126,9 @@ const program = String.raw`
     ourSet is List<Text> {"this", "is", "a", "legal", "set", "in", "Inkling"}
     aSetOfNums is List<Num> {"1", "2", "3", "4", "5", "6", "7"}
     aSetOfNums[0] is 0
+    ourDict is Dict<Num, Text> {0: "this", 1: "is", 2: "a", 3: "legal", 4: "dict", 5: "in", 6: "Inkling"}
+    aDictOfNums is Dict<Num, Num> {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7}
+    aDictOfNums[0] is 0
 `;
 
 describe("The syntax checker", () => {

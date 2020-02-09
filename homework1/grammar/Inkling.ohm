@@ -1,5 +1,5 @@
 Inkling {
-    Program     =  (Stmt | ClassDecl)*
+    Program     =  (Stmt)*
     Stmt   =  newline* SimpleStmt newline+ -- simpleStmt
            | newline* IfExpr newline+               -- ifBlock
            | newline* ForExpr newline+              -- forLoop
@@ -33,9 +33,8 @@ Inkling {
             |  "if" "(" Exp ")" Block
                 ("else if" "(" Exp ")" Block)*
                 ("else" Block)?                        -- if
+                
     ForExpr = "for" id "is" Type "in" Exp Block
-
-    ClassDecl   =  "Class" id ("extends" id)? "{" (Field | newline)+ "}"   -- class
 
     Field       =  id ":" Exp
     Exp = Exp1 "and" Exp     --plus
@@ -63,11 +62,11 @@ Inkling {
         |   "{" ListOf<Exp, ","> "}"                  -- set
         |  "{" ListOf<KeyValue, ","> "}"              -- dict
 
-    KeyValue = id ":" Exp
+    KeyValue = alnum+ ":" Exp
     keyword = ( "while " | "if " | "else " | "is " | "true " | "false " | "for " | "do " | "Always "
-    | "display"| "gimme " | "btw: " | "fyi: " | "exit " | "in " | "and " | "or " | "function " | "Num " | "Dict " | "Bool " | "List " | "Text ")
+    | "display"| "gimme " | "btw: " | "fyi: " | "exit " | "in " | "and " | "or " | "function " | "Num " | "Dict<" | "Bool " | "List<" | "Text " | "Set<")
 
-    Type = (Num | Dict | Bool | List | Text)
+    Type = (Num | Dict | Bool | List | Text | Set)
     Num     = "Num"
     List    =  "List<" Type ">"
     Set     =  "Set<" Type ">"
