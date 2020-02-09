@@ -402,11 +402,10 @@ generators.stack = () => {
   Object.assign(Pow.prototype, {
     gen() {
       this.left.gen()
-      // vvvv need to iterate  this somehow
-      // iterate {
-      this.left.gen()
-      emit('MUL')
-      // }
+      for (let i = 0; i < this.right.value; i += 1) {
+        this.left.gen()
+        emit('MUL')
+      }
     },
   })
   Object.assign(BinaryExp.prototype, {
