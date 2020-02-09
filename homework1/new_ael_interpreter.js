@@ -2,20 +2,20 @@ const ohm = require('ohm-js')
 
 const aelGrammar = ohm.grammar(`Ael {
   Program = (Statement ";")+
-  Statement = id "=" Exp       --assign
-            | print Exp        --print
-            | "while" "(" Exp ")" "{" Program "}"  --while
-  Exp       = Exp "+" Term     --plus
-            | Exp "-" Term     --minus
+  Statement = id "=" Exp                            --assign
+            | print Exp                             --print
+            | "while" "(" Exp ")" "{" Program "}"   --while
+  Exp       = Exp "+" Term                          --plus
+            | Exp "-" Term                          --minus
             | Term
-  Term      = Term "*" Pow  --times
-            | Term "/" Pow  --divide
+  Term      = Term "*" Pow                          --times
+            | Term "/" Pow                          --divide
             | Pow
-  Pow       = Factor "**" Pow --power
+  Pow       = Factor "**" Pow                       --power
             | Factor
-  Factor    = "-" Primary      --negate
+  Factor    = "-" Primary                           --negate
             | Primary
-  Primary   = "(" Exp ")"      --parens
+  Primary   = "(" Exp ")"                           --parens
             | number
             | id
   number    = digit+
