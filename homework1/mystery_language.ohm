@@ -1,9 +1,9 @@
 const ohm = require("ohm-js");
 const mysteryGrammar = ohm.grammar(`Mystery {
-   Program = (Function)* Exp
+   Program = (Function)* Exp  				-- expression
    Function = "func" id Params Body
-   Exp   = Addop ? Addop : Exp  --cond
-          | Addop
+   Exp   = Addop "?" Addop ":" Exp  -- ternary
+   		  | Addop				-- addop
    Addop  = Addop "+" Term     --plus
           | Addop "-" Term     --minus
           | Term
@@ -14,23 +14,25 @@ const mysteryGrammar = ohm.grammar(`Mystery {
           | Factorial
    Factorial  = FuncCall "!"   --factorial
           | FuncCall
-   FuncCall = id Args
-          | Primary
+   FuncCall = id Args         -- idArgs
+          | Primary           -- funcCall
    Primary = "(" Exp ")"      --parens
-          | number
-          | id
-   Params  = ListOf<id, ",">
-   Args    = ListOf<Exp, ",">
+          | Number            --num
+          | String			  -- string
+          | id                -- id
+   Params  = "(" ListOf<id, ","> ")"
+   Args    = "(" ListOf<Exp, ","> ")"
    Body    = (Exp ";")+ "end"
    Number  = float | int
    int     = digit+
    float   = digit+ "." digit+ expo?
    expo     = "e" "-"? digit+
-   hex     = "0x" hexDigit+
-   String  = qq (~qq escape | any)* qq
-   qq      = "\""
-   escape  =  "\\\\" | "\\\"" | "\\'" | "\\n" | "\\t" | hexseq
-   hexseq  =  "\u{" h h? h? h? h? h? "}"
-   id      = ~func ~end (letter | "$") char*
+   h = hexDigit
+   String  = "\"" (~"\\" ~"\"" ~"\n" ~ "\\u{" any | escape)* "\""
+   escape  = "\\" ("n" | "\'" | "\\" | "\"")  --escape
+           | "\\u""{"h h? h? h? h? h?"}"  --hexDigit
+   id      = ~"func" ~end (letter | "$") char*
    char    = alnum | "_" | "$"
-   Comments = "--}>" any* "\n"
+   comments = "--}>" (~"\n" any)* "\n"
+   space      :=  " " | "\t" | "\n" | comments
+}`)
