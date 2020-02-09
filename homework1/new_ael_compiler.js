@@ -360,6 +360,9 @@ generators.stack = () => {
     '/': 'DIV',
   }
 
+  let firstLabel = 0
+  let secondLabel = 1
+
   const instructions = []
 
   function emit(instruction) {
@@ -391,12 +394,14 @@ generators.stack = () => {
   })
   Object.assign(WhileStatement.prototype, {
     gen() {
-      emit('LABEL L1')
+      emit(`LABEL L${firstLabel}`)
       this.expression.gen()
-      emit('JZ L2')
+      emit(`JZ L${secondLabel}`)
       this.block.gen()
-      emit('JUMP L1')
-      emit('LABEL L2')
+      emit(`JUMP L${firstLabel}`)
+      emit(`LABEL L${secondLabel}`)
+      firstLabel += 1
+      secondLabel += 1
     },
   })
   Object.assign(Pow.prototype, {
