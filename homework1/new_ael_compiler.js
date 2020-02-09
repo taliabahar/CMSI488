@@ -443,6 +443,7 @@ generators.stack = () => {
 // -----------------------------------------------------------------------------
 
 if (process.argv.length !== 4 || !['-C', '-JavaScript', '-Stack'].includes(process.argv[2])) {
+  // eslint-disable-next-line no-console
   console.error('Syntax: node ael-compiler.js -<C|JavaScript|Stack> program')
   process.exitCode = 1
 } else {
