@@ -15,7 +15,7 @@ module.exports = {
     return /^(?![DFIOQU]).*[A-Z][0-9][A-Z] [0-9][A-Z][0-9]$/.test(s)
   },
   isMLComment(s) {
-    return /^\(\*([^(*)]*)\*\)$/.test(s)
+    return /^\(\*[^(*)]*(\**)?\*\)$/.test(s)
   },
   isVisa(s) {
     return /^5[0-5][0-9]{2}([0-9]{4}){3}/.test(s)
