@@ -15,7 +15,8 @@
     "eslint-plugin-import": "^2.20.1"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest --collect-coverage",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC"
