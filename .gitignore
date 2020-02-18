@@ -1,2 +1,3 @@
 node_modules/
-homework1/.idea/
+.idea/
+coverage/
