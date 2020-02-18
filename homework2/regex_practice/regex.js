@@ -18,9 +18,9 @@ module.exports = {
     return /^\(\*[^(*)]*(\**)?\*\)$/.test(s)
   },
   isVisa(s) {
-    return /^5[0-5][0-9]{2}([0-9]{4}){3}$/.test(s)
+    return /^5[0-5][0-9]{2}([0-9]{4}){3}/.test(s)
   },
   isMasterCard(s) {
-    return /^4[0-9]{3}([0-9]{4}){3}$/.test(s)
+    return /^4[0-9]{3}([0-9]{4}){3}/.test(s)
   },
 }
