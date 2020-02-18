@@ -4,7 +4,8 @@
   "description": "regex module of homework2",
   "main": "regex.js",
   "scripts": {
-    "test": "regex.test.js"
+    "test": "jest --collect-coverage",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
