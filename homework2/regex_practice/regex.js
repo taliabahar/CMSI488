@@ -9,7 +9,7 @@ module.exports = {
     return /^4[0-9]{3}([0-9]{4}){3}/.test(s)
   },
   isAdaFloat(s) {
-    return /^(\d_?)+((\.(\d_?)+)?(([eE])-?((\d_?)+)))?$|^(\d_?)+#\w+(.\w+)?#(([eE])-?((\d_?)+))?$/.test(s)
+    return /^(\d(_\d)?)+((\.(\d_?)+)?(([eE])[+-]?((\d_?)+)))?$|^(\d_?)+#\w+(.\w+)?#(([eE])-?((\d_?)+))?$/.test(s)
   },
   isDivisibleBy64(s) {
     return /^1[0-1]*0{6}$|^0$/.test(s)
@@ -20,7 +20,7 @@ module.exports = {
   isMLComment(s) {
     return /^\(\*[^(*)]*(\**)?\*\)$/.test(s)
   },
-  isNotDOgDoorDenNoLookAround(s) {
+  isNotDogDoorDenNoLookAround(s) {
     return /^(?!(dog|door|den)$)[a-zA-Z]*$/.test(s)
   },
   // need above using look around
