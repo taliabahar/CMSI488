@@ -1,12 +1,12 @@
 module.exports = {
   isCanadianPostalCode(s) {
-    return /^(?![DFIOQU]).*[A-Z][0-9][A-Z] [0-9][A-Z][0-9]$/.test(s)
+    return /^(?![ DFIOQU]).*[A-Z][0-9][A-Z] [0-9][A-Z][0-9]$/.test(s)
   },
   isVisa(s) {
-    return /^5[0-5][0-9]{2}([0-9]{4}){3}/.test(s)
+    return /^4\d{3}(\d{4}){2}(\d{1,4})$/.test(s)
   },
   isMasterCard(s) {
-    return /^4[0-9]{3}([0-9]{4}){3}/.test(s)
+    return /^5[0-5]\d{2}(\d{4}){3}$/.test(s)
   },
   isAdaFloat(s) {
     return /^(\d(_\d)?)+((\.(\d_?)+)?(([eE])[+-]?((\d_?)+)))?$|^(\d_?)+#\w+(.\w+)?#(([eE])-?((\d_?)+))?$/.test(s)
