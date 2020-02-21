@@ -4,7 +4,7 @@ const regexModule = require('../regex_practice/regex')
 
 const FIXTURE = {
   isCanadianPostalCode: {
-    good: ['A7X 2P8', 'P8E 4R2', 'Q1V 9P2'],
+    good: ['A7X 2P8', 'P8E 4R2'],
     bad: ['A7X   9B2', 'C7E9U2', '', 'Dog', 'Q1V\t9P2', ' A7X 2P8', 'A7X 2P8 '],
   },
   isVisa: {

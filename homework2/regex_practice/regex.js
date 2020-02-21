@@ -23,5 +23,8 @@ module.exports = {
   isNotDogDoorDenWithLookAround(s) {
     return /^(?!(dog|door|den)$)[a-zA-Z]*$/.test(s)
   },
+  isNotThreeEndingInOO(s) {
+    return /^(?!^[a-z](oo)$)[a-z]*$/.test(s)
+  },
   // need above using look around
 }
