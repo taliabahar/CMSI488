@@ -1,0 +1,37 @@
+const ohm = require("ohm-js");
+function isCanadianPostalCode(s) {
+   const grammar = ohm.grammar(`CanadianPostalCode {
+      postalCode = ~("D" | "F" | "I" | "O" | "Q" | "U" | "W" | "Z") "A" .. "Z" digit "A" .. "Z" " " digit "A" .. "Z" digit
+   }`)
+   return grammar.match(s).succeeded();
+}
+function isVisa(s) {
+   const grammar = ohm.grammar(`VisaNumber {
+      visaNumber = "4" digit digit digit digit digit digit digit digit digit digit digit digit (digit digit digit)?
+   }`)
+   return grammar.match(s).succeeded();
+} 
+function isMastercard(s) {
+   const grammar = ohm.grammar(`MastercardNumber {
+      mastercardNumber = "5" "0" .. "5" digit digit digit digit digit digit digit digit digit digit digit digit digit digit
+   }`)
+   return grammar.match(s).succeeded();
+}
+function isEightThroughTwentyNine(s) {
+const grammar = ohm.grammar(`IsEightThroughTwentyNine {
+ isEightThroughTwentyNine= "8" | "9" | "10" | "11" | "12" | "13" | "14" | "15" | "16" | "17" | "18" | "19" | "20" | "21" | "22"|  "23" | "24" | "25" | "26" | "27" | "28" | "29"}`)
+ return grammar.match(s).suceeded();
+}
+function isMLComment(s) {
+   const grammar = ohm.gramamr(`IsMLComment {
+      Comment = "(*" (alnum* ~Comment) "*)"
+   }
+   return grammar.match(s).suceeded();
+}
+module.exports = {
+   isCanadianPostalCode,
+   isVisa,
+   isMastercard,
+   isEightThroughTwentyNine,
+   isMLComment
+}
