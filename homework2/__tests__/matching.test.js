@@ -1,6 +1,6 @@
 const assert = require('assert')
 const regexModule = require('../regex_practice/regex')
-// const ohmModule = require('../ohm_practice')
+const ohmModule = require('../ohm_practice/regex.ohm')
 
 const FIXTURE = {
   isCanadianPostalCode: {
@@ -13,8 +13,7 @@ const FIXTURE = {
   },
   isMasterCard: {
     good: ['5100000000000000', '5294837679998888', '5309888182838282'],
-    bad: ['5763777373890002', '513988843211541', '51398884321108541', '', 'OH',
-      '5432333xxxxxxxxx'],
+    bad: ['5763777373890002', '513988843211541', '51398884321108541', '', 'OH', '5432333xxxxxxxxx'],
   },
   isAdaFloat: {
     good: ['1', '23_5', '4#20#', '13#fD34_2_1#', '1.3e2', '11_3.3_3_222E-199',
@@ -66,4 +65,4 @@ function runTests(moduleName, module) {
 }
 
 runTests('regex', regexModule)
-// runTests('Ohm', ohmModule)
+runTests('Ohm', ohmModule)
