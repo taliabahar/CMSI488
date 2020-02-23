@@ -5,7 +5,7 @@
   "main": "regex.js",
   "scripts": {
     "test": "jest --collect-coverage",
-    "lint": "eslint ."
+    "lint": "eslint . --fix"
   },
   "author": "",
   "license": "ISC",
