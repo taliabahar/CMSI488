@@ -38,7 +38,7 @@ function isEightThroughTwentyNine(s) {
 
 function isMLComment(s) {
    const grammar = ohm.grammar(`IsMLComment {
-      comment = "(*" ((alnum | "*")* ~comment) "*)"
+      comment = "(*" (alnum* ~comment) "*)"
    }`)
    return grammar.match(s).succeeded();
 }
