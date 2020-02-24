@@ -19,6 +19,14 @@ function isMastercard(s) {
    return grammar.match(s).succeeded();
 }
 
+function isDivisibleBy64(s) {
+   const grammar = ohm.grammar(`IsDivisibleBy64 {
+      isDivisibleBy64 = "1" ("0" | "1")* "000000" --normal
+      | "0"+ --zero
+}`)
+   return grammar.match(s).succeeded();
+}
+
 function isEightThroughTwentyNine(s) {
     const grammar = ohm.grammar(`IsEightThroughTwentyNine {
         isEightThroughTwentyNine = "8" | "9" | "10" | "11" | "12" | "13" | "14" | "15" | "16" | "17" | "18" | "19" | "20" | "21" | "22"|  "23" | "24" | "25" | "26" | "27" | "28" | "29"
@@ -38,5 +46,6 @@ module.exports = {
    isVisa,
    isMastercard,
    isEightThroughTwentyNine,
-   isMLComment
+   isMLComment,
+   isDivisibleBy64
 }
