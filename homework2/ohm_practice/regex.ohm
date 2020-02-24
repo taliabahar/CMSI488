@@ -21,10 +21,12 @@ function isMastercard(s) {
 
 function isAdaFloat(s) {
    const grammar = ohm.grammar(`AdaFloat {
-      first = ((digit("_" digit)?)+(("." (digit "_"?)+)?((("e" | "E"))("+" | "-")?((digit "_"?)+)))?)
-      second = ((digit "_"?)+ "#" (alnum | "_")+ ("." (alnum | "_")+)? "#")(("e" | "E") "-"? ((digit "_"?)+))?
-
-      adaFloat = first | second
+      float = digits (frac | based)? exp?
+      digits = digit ("_"? digit)*
+      frac = "." digits
+      based = "#" hexDigits ("." hexDigits)? "#"
+      hexDigits = hexDigit ("_"? hexDigit)*
+      exp = ("E" | "e") ("+" | "-")? digits
    }`)
    return grammar.match(s).succeeded();
 }
