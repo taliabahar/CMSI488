@@ -2,16 +2,18 @@ const ohm = require("ohm-js");
 
 function isCanadianPostalCode(s) {
    const grammar = ohm.grammar(`CanadianPostalCode {
-      postalCode = ~("D" | "F" | "I" | "O" | "Q" | "U" | "W" | "Z") "A" .. "Z" digit "A" .. "Z" " " digit "A" .. "Z" digit
+      postalCode = ~("D" | "F" | "I" | "O" | "Q" | "U" | "W" | "Z") upper digit upper " " digit upper digit
    }`)
    return grammar.match(s).succeeded();
 }
+
 function isVisa(s) {
    const grammar = ohm.grammar(`VisaNumber {
       visaNumber = "4" digit digit digit digit digit digit digit digit digit digit digit digit (digit digit digit)?
    }`)
    return grammar.match(s).succeeded();
 }
+
 function isMastercard(s) {
    const grammar = ohm.grammar(`MastercardNumber {
       mastercardNumber = "5" "0" .. "5" digit digit digit digit digit digit digit digit digit digit digit digit digit digit
