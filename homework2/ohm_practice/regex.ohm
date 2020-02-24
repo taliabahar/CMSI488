@@ -11,7 +11,7 @@ function isVisa(s) {
       visaNumber = "4" digit digit digit digit digit digit digit digit digit digit digit digit (digit digit digit)?
    }`)
    return grammar.match(s).succeeded();
-} 
+}
 function isMastercard(s) {
    const grammar = ohm.grammar(`MastercardNumber {
       mastercardNumber = "5" "0" .. "5" digit digit digit digit digit digit digit digit digit digit digit digit digit digit
@@ -24,6 +24,13 @@ function isDivisibleBy64(s) {
       isDivisibleBy64 = "1" ("0" | "1")* "000000" --normal
       | "0"+ --zero
 }`)
+function isAdaFloat(s) {
+   const grammar = ohm.grammar(`AdaFloat {
+      first = ((digit("_" digit)?)+(("." (digit "_"?)+)?((("e" | "E"))("+" | "-")?((digit "_"?)+)))?)
+      second = ((digit "_"?)+ "#" (alnum | "_")+ ("." (alnum | "_")+)? "#")(("e" | "E") "-"? ((digit "_"?)+))?
+
+      adaFloat = first | second
+   }`)
    return grammar.match(s).succeeded();
 }
 
@@ -48,4 +55,5 @@ module.exports = {
    isEightThroughTwentyNine,
    isMLComment,
    isDivisibleBy64
+   isAdaFloat,
 }
