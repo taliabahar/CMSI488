@@ -18,7 +18,7 @@ module.exports = {
     return /^([8-9]|(([12])\d))(\.(\d*))?$/.test(s)
   },
   isMLComment(s) {
-    return /^\(\*[^(*)]*(\**)?\*\)$/.test(s)
+    return /^\(\*([^*)]|\*(?!\))|(?!\*)\))*\*\)$/.test(s)
   },
   isNotDogDoorDenWithLookAround(s) {
     return /^(?!(dog|door|den)$)[a-zA-Z]*$/.test(s)
