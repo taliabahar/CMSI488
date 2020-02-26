@@ -21,9 +21,11 @@ function isMastercard(s) {
 
 function isDivisibleBy64(s) {
    const grammar = ohm.grammar(`IsDivisibleBy64 {
-      isDivisibleBy64 = "1" ("0" | "1")* "000000" --normal
-      | "0"+ --zero
+      isDivisibleBy64 = "1" ("0"* | "1"*) "000000" --normal
+      | "0"+ --zeros
 }`)
+   return grammar.match(s).succeeded();
+}
 function isAdaFloat(s) {
    const grammar = ohm.grammar(`AdaFloat {
       first = ((digit("_" digit)?)+(("." (digit "_"?)+)?((("e" | "E"))("+" | "-")?((digit "_"?)+)))?)
@@ -55,5 +57,4 @@ module.exports = {
    isEightThroughTwentyNine,
    isMLComment,
    isDivisibleBy64
-   isAdaFloat,
-}
+   }
