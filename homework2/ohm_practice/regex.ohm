@@ -64,6 +64,23 @@ function isNotDogDoorDenWithLookAround(s) {
    return grammar.match(s).succeeded();
 }
 
+function isNotDogDoorDenNoLookAround(s) {
+   const grammar = ohm.grammar(`isNotDogDoorDenNoLookAround {
+      comment = ("a".."c" | "e".."z" | "A".."Z") letter*                     --noD
+              | "d" ("a".."d" | "f".."n" | "p".."z" | "A".."Z") letter*      --dWithoutOE
+              | "do" ("a".."f" | "h".."n" | "p".."z" | "A".."Z") letter*     --doWithoutGO
+              | "dog" letter+                                                --dog
+              | "doo" ("a".."q" | "s".."z" | "A".."Z") letter*               --dooWithoutR
+              | "door" letter+                                               --door
+              | "doo"                                                        --doo
+              | "de" ("a".."m" | "o".."z" | "A".."Z") letter*                --denWithoutN
+              | "den" letter+                                                --den
+              | letter letter letter letter letter+                          --bigWords
+              | letter? letter?                                              --smolWords
+   }`)
+   return grammar.match(s).succeeded();
+}
+
 module.exports = {
    isCanadianPostalCode,
    isVisa,
@@ -73,4 +90,5 @@ module.exports = {
    isDivisibleBy64,
    isAdaFloat,
    isNotDogDoorDenWithLookAround,
+   isNotDogDoorDenNoLookAround,
 }
