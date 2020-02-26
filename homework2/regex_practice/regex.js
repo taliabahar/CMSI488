@@ -18,13 +18,15 @@ module.exports = {
     return /^([8-9]|(([12])\d))(\.(\d*))?$/.test(s)
   },
   isMLComment(s) {
-    return /^\(\*([^*)]|\*(?!\))|(?!\*)\))*\*\)$/.test(s)
+    return /^\(\*((?!\*\)).)*(\*\))$/.test(s)
   },
   isNotDogDoorDenWithLookAround(s) {
     return /^(?!(dog|door|den)$)[a-zA-Z]*$/.test(s)
   },
+  isNotDogDoorDenNoLookAround(s) {
+    return /^(d?o?o?e?|[^d][a-zA-z]*|[d][^(o|e)][[a-zA-z]*|[d][e][^n][[a-zA-z]*|[d][e][n][[a-zA-z]+|[d][o][^(g|o)][[a-zA-z]*|[d][o][g][[a-zA-z]+|[d][o][o][^r][[a-zA-z]*|[d][o][o][r][[a-zA-z]+)$/gm.test(s)
+  },
   isNotThreeEndingInOO(s) {
     return /^(?!^[a-z](oo)$)[a-z]*$/i.test(s)
   },
-  // need above using look around
 }
