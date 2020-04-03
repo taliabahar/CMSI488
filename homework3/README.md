@@ -37,7 +37,7 @@ h. !!x
 2. (6 pts) Here’s a code fragment in some generic language:
 
 
- ![Code Fragment](https://imgur.com/Lf4e6Xd)
+ ![Code Fragment](https://i.imgur.com/Lf4e6Xd.png)
 
 
 
