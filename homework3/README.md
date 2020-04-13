@@ -45,7 +45,7 @@ h. !!x
 For each of the following outputs, state scope rules that would have caused them:
 
 #### a. 3
-####    5
+#### 5
 
 
 The language prioritizes global scope over local scope if the local scope is not present. Scope in this language is dynamic.
@@ -70,14 +70,14 @@ In this case, language does not allow for global scope to be accessed in local s
 
 
 #### d. 75354253672
-   75354253674
+#### 75354253674
 
 
 In this language, the scope of x begins after it is declared, but in order for x to be used within the local scope, x needs to be defined within that scope too, so in the local scope of f(), the program can see that x exists, but cannot see the value it holds. When the first print statement is called on line 3, it prints where x which is in memory: 75354253672. Then when x is declared to be x + 2, x + 2 is evaluated first to be the value of where x is pointing to in memory plus 2, so 75354253672 + 2 which is 75354253674, which is printed by the print statement on line 5.
 
 
 #### e. 3
-####  -23482937128
+#### -23482937128
 
 
   In this language, the scope of a variable begins after its declaration, and local scope can access global scope when local scope is not present. Since x has not been declared in the local scope of f(), the program prioritizes the global scope, so the first print statement prints 3, but after x is redeclared, the x in x+2 now sees the new binding that is not longer from the global scope, so x now holds the value of where it is located in memory plus 2, which in this case is -23482937128
@@ -95,12 +95,8 @@ This language allows redeclaration, but does not retain old bindings upon creati
 
 | Language | 'private' Semantics |
 | --- | --- |
-| Ruby | Ruby uses keywords ‘public’, ‘protected’, or ‘private’ to manage visibility of code. By default, all methods in Ruby are public, however global methods under the Object class and instance methods are implicitly private. When programming in Ruby, you can use ‘private’ with or without an argument- passing an argument with the keyword ‘private’ assigns that particular method private accessibility, however using ‘private’ with no argument assigns all methods following the keyword private accessibility. Unlike C#, ‘private’ in Ruby means that the member is private to only the instance the member belongs to. In Ruby, visibility defined by the keywords ‘public’, ‘protected’, and ‘private’ is dynamic, meaning you can modify the visibility later on. For example, we can initialize d as public 
-def d; 2; end
-public
-and modify the visibility to be private after the declaration
-private :d
-Additionally, if you try to access a restricted method you will receive an ‘access violation runtime error.’ |
+| Ruby | Ruby uses keywords ‘public’, ‘protected’, or ‘private’ to manage visibility of code. By default, all methods in Ruby are public, however global methods under the Object class and instance methods are implicitly private. When programming in Ruby, you can use ‘private’ with or without an argument- passing an argument with the keyword ‘private’ assigns that particular method private accessibility, however using ‘private’ with no argument assigns all methods following the keyword private accessibility. Unlike C#, ‘private’ in Ruby means that the member is private to only the instance the member belongs to. In Ruby, visibility defined by the keywords ‘public’, ‘protected’, and ‘private’ is dynamic, meaning you can modify the visibility later on. For example, we can initialize d as public and modify the visibility to be private after the declaration      def d; 2; end
+public     private :d Additionally, if you try to access a restricted method you will receive an ‘access violation runtime error.’ |
 | C# | Similar to Ruby, C# also uses ‘public’, ‘protected’, and ‘private’ for accessibility management throughout a program. However, the semantics of the keyword ‘private’ differ from those of Ruby. In C#, ‘private’ only grants access to the member within the same class or struct (unlike Ruby in which the member is private to the instance that it is declared in). Also in C#, classes and structs have private access by default. In C#, if you attempt to access a private member outside of a class, C# throws a Compile-Time error. |
 
 Information researched from 
