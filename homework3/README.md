@@ -52,7 +52,7 @@ The scope of a variable begins after its declaration is complete and ends and th
 
 #### b. undefined NaN
 
-In this language, the scope of a variable is the entire block in which the variable is declared in. Prior to declaration, variables are undefined. Since the first print statement is within the scope of where x is declared in f(), but is before the declaration of x, x at line 3 is undefined. Then on line 4, x is declared and assigned a value of x + 2 in the local scope of f(). When evaluated, x+2 is undefined + 2. which is not a number, so the second print statement on line 5 prints NaN.
+In this language, the scope of a variable is the entire block in which the variable is declared in. This has the effect of completely shadowing global scope. Prior to declaration, variables are undefined. Since the first print statement is within the scope of where x is declared in f(), but is before the declaration of x, x at line 3 is undefined. Then on line 4, x is declared and assigned a value of x + 2 in the local scope of f(). When evaluated, x+2 is undefined + 2. which is not a number, so the second print statement on line 5 prints NaN.
 
 
 #### c. Error on line 3: x is not declared
