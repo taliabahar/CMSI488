@@ -4,11 +4,11 @@
 
 a. x+++-y   
 
-    Syntax Error
+    Not a Compiler Error
 
 b. x---+y
 
-    Syntax Error
+    Not a Compiler Error
 
 c. incrementing a read-only variable
 
@@ -47,21 +47,12 @@ For each of the following outputs, state scope rules that would have caused them
 #### a. 3
 #### 5
 
-
-The language prioritizes global scope over local scope if the local scope is not present. Scope in this language is dynamic.
-
-
-There are two possibilities for what this language allows regarding scope and redeclaration. The more likely possibility is that the language allows for redeclaration of variables by making new bindings but retaining old ones. When f() is called, the first print statement prints the value of the variable x declared in the global scope- this occurs because x has not been declared in the local scope, so the code will prioritize the global scope where x is declared. Then, another binding for x is created and is defined to be x + 2. The language will evaluate the right side of the assignment first, evaluating x + 2 to be 3 + 2 which is 5, and then will assign that value to x, so the second variable x, which exists in the local scope of f(), holds the value of 5 which is then printed in the next line of the code. 
-
-
-The other possibility is that the language treats redeclaration of a variable as an assignment. In the code above, x has been globally declared and defined to hold the value 3. When f() is called, the first print statement prints the value of x, which at this point is still 3. Then, the function reassigns x. Again, the language will evaluate the right side first, initially evaluating x + 2 to be 5 and then redeclaring that value of 5 to x, so the second print statement prints 5.
+The scope of a variable begins after its declaration is complete and ends and the end of the block in which the variable is declared in. In this case, the scope of x begins after its declaration on line 1, and local scopes can access variables in the global scope, so the first print statement on line 3 prints 3. Then x is redeclared on line 4 and the scope of the redeclared x begins after redeclaration is complete. Since the declaration is not complete yet, the x is x + 2 still holds the original value of 3, so x is redeclared to hold the value of 3 + 2, which is 5. When x is printed again on line 5, the program is accessing the value of the redeclared x, so 5 is printed.
 
 
 #### b. undefined NaN
 
-
-This language does not allow for global scope to be accessed in local scopes. Also, variables must be declared in a local scope in order for it to be used within that scope, however the language does not throw an error when trying to access a variable in a local scope if the variable has not been declared in that scope. It instead returns undefined as the value for the variable. This is why the first print statement in f() prints undefined. Then on line 4, x is declared and assigned a value of x + 2 in the local scope of f(). When evaluated, x+2 is undefined + 2. which is not a number, so the second print statement on line 5 prints NaN.
-
+In this language, the scope of a variable is the entire block in which the variable is declared in. Prior to declaration, variables are undefined. Since the first print statement is within the scope of where x is declared in f(), but is before the declaration of x, x at line 3 is undefined. Then on line 4, x is declared and assigned a value of x + 2 in the local scope of f(). When evaluated, x+2 is undefined + 2. which is not a number, so the second print statement on line 5 prints NaN.
 
 
 #### c. Error on line 3: x is not declared
