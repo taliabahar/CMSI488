@@ -4,11 +4,11 @@
 
 a. x+++-y   
 
-    Not a Compiler Error
+    Not a Compile Time Error
 
 b. x---+y
 
-    Not a Compiler Error
+    Not a Compile Time Error
 
 c. incrementing a read-only variable
 
@@ -24,15 +24,15 @@ e. Using an uninitialized variable
 
 f. Dereferencing a null reference
 
-    Not a Compiler Error
+    Not a Compile Time Error
 
 g. null instanceof C
 
-    Not a Compiler Error
+    Not a Compile Time Error
 
 h. !!x
 
-    Not a Compiler Error
+    Not a Compile Time Error
 
 
 ### 2. (6 pts) Here’s a code fragment in some generic language:
