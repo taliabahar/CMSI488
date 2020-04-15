@@ -2,35 +2,35 @@
 
 ### 1. (8 pts) Classify the following as a syntax error, semantic error, or not a compile time error. In the case where code is given, assume all identifiers are properly declared and in scope. All items refer to the Java language.
 
-####a. x+++-y   
+#### a. x+++-y   
 
     Not a Compile Time Error
 
-####b. x---+y
+#### b. x---+y
 
     Not a Compile Time Error
 
-####c. incrementing a read-only variable
+#### c. incrementing a read-only variable
 
     Semantic Error
 
-####d. accessing a private field in another class
+#### d. accessing a private field in another class
 
     Semantic Error
 
-####e. Using an uninitialized variable
+#### e. Using an uninitialized variable
 
     Semantic Error
 
-####f. Dereferencing a null reference
+#### f. Dereferencing a null reference
 
     Not a Compile Time Error
 
-####g. null instanceof C
+#### g. null instanceof C
 
     Not a Compile Time Error
 
-####h. !!x
+#### h. !!x
 
     Not a Compile Time Error
 
