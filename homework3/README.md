@@ -64,14 +64,14 @@ In this case, language does not allow for global scope to be accessed in local s
 #### 75354253674
 
 
-In this language, the scope of x begins after it is declared, but in order for x to be used within the local scope, x needs to be defined within that scope too, so in the local scope of f(), the program can see that x exists, but cannot see the value it holds. When the first print statement is called on line 3, it prints where x which is in memory: 75354253672. Then when x is declared to be x + 2, x + 2 is evaluated first to be the value of where x is pointing to in memory plus 2, so 75354253672 + 2 which is 75354253674, which is printed by the print statement on line 5.
+In this language, the scope of x begins after it is declared, but in order for x to be used within the local scope, x needs to be defined within that scope too, so in the local scope of f(), the program can see that x held in memory: 75354253672. Then when x is declared to be x + 2, x + 2 is evaluated first to be the value of where x is pointing to in memory plus 2, so 75354253672 + 2 which is 75354253674, which is printed by the print statement on line 5.
 
 
 #### e. 3
 #### -23482937128
 
 
-  In this language, the scope of a variable begins after its declaration, and local scope can access global scope when local scope is not present. Since x has not been declared in the local scope of f(), the program prioritizes the global scope, so the first print statement prints 3, but after x is redeclared, the x in x+2 now sees the new binding that is not longer from the global scope, so x now holds the value of where it is located in memory plus 2, which in this case is -23482937128
+  In this language, the scope of a variable begins after its declaration, and local scope can access global scope when local scope is not present. Since x has not been declared in the local scope of f(), the program prioritizes the global scope, so the first print statement prints 3, but after x is redeclared, the x in x+2 now sees the new binding that is not longer from the global scope, so x now holds the value of what it was pointing to in memory plus 2, which in this case happens to be -23482937128
 
 
 #### f. Error on line 4: x used in its own declaration
