@@ -24,7 +24,7 @@ e. Using an uninitialized variable
 
 f. Dereferencing a null reference
 
-    Semantic Error
+    Not a Compiler Error
 
 g. null instanceof C
 
